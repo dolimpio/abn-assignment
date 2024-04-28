@@ -1,6 +1,8 @@
 <script setup>
 import OrganizationChart from 'primevue/organizationchart';
 import Card from 'primevue/card';
+import Button from 'primevue/button';
+
 
 import { ref } from "vue";
 
@@ -56,6 +58,7 @@ const hide = () => {
     console.log("Inside of hide");
 
     selectedNode.value = {};
+    selection.value = {};
     console.log(selectedNode);
 }
 </script>
@@ -68,7 +71,10 @@ const hide = () => {
                 <span>{{ slotProps.node.label }}</span>
             </template>
         </OrganizationChart>
-        <Card v-if="Object.keys(selectedNode).length !== 0 ">
+        <Card v-if="Object.keys(selectedNode).length !== 0">
+            <template #header>
+                <Button icon="pi pi-times" severity="danger" aria-label="Cancel" @click="hide" />
+            </template>
             <template #title>{{ selectedNode.label }}</template>
             <template #content>
                 <p class="m-0">
