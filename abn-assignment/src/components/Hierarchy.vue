@@ -1,0 +1,76 @@
+<script setup>
+import OrganizationChart from 'primevue/organizationchart';
+import Card from 'primevue/card';
+
+import { ref } from "vue";
+
+const data = ref({
+    key: '0',
+    label: "A",
+    data: { "description": "This is a description of A" },
+    children: [
+        {
+            key: '0_0',
+            label: "B",
+            data: { "description": "This is a description of B" },
+            children: [
+                {
+                    key: '0_0_1',
+                    label: "B-1",
+                    data: { "description": "This is a description of B-1" }
+                },
+                {
+                    key: '0_0_2',
+                    label: "B-2",
+                    data: { "description": "This is a description of B-2" }
+                },
+                {
+                    key: '0_0_3',
+                    label: "B-3",
+                    data: { "description": "This is a description of B-3" }
+                }
+            ]
+        },
+        {
+            key: '0_1',
+            label: "C",
+            data: { "description": "This is a description of C" }
+        },
+        {
+            key: '0_2',
+            label: "D",
+            data: { "description": "This is a description of D" }
+        }
+    ]
+});
+const selection = ref({});
+
+var selectedNode = ref(null);
+
+const show = (event) => {
+    selectedNode = event;
+    console.log(selectedNode);
+}
+const hide = (event) => {
+    selectedNode = null;
+    console.log(selectedNode);
+}
+</script>
+
+<template>
+    <div class="card overflow-x-auto">
+        <OrganizationChart v-model:selectionKeys="selection" :value=data selectionMode="single" @node-select="show" @node-unselected="hide">
+            <template #default="slotProps">
+                <span>{{ slotProps.node.label }}</span>
+            </template>
+        </OrganizationChart>
+        <Card v-if="selectedNode !== null ">
+            <template #title>{{ selectedNode.label }}</template>
+            <template #content>
+                <p class="m-0">
+                    {{ selectedNode.data.description }}
+                </p>
+            </template>
+        </Card>
+    </div>
+</template>
