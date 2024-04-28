@@ -44,27 +44,31 @@ const data = ref({
     ]
 });
 const selection = ref({});
-
-var selectedNode = ref(null);
+let selectedNode = ref({});
 
 const show = (event) => {
-    selectedNode = event;
+    console.log("Inside of show");
+    selectedNode.value = event;
     console.log(selectedNode);
 }
-const hide = (event) => {
-    selectedNode = null;
+
+const hide = () => {
+    console.log("Inside of hide");
+
+    selectedNode.value = {};
     console.log(selectedNode);
 }
 </script>
 
 <template>
     <div class="card overflow-x-auto">
-        <OrganizationChart v-model:selectionKeys="selection" :value=data selectionMode="single" @node-select="show" @node-unselected="hide">
+        <OrganizationChart v-model:selectionKeys="selection" :value=data selectionMode="single" @node-select="show"
+            @node-unselect="hide">
             <template #default="slotProps">
                 <span>{{ slotProps.node.label }}</span>
             </template>
         </OrganizationChart>
-        <Card v-if="selectedNode !== null ">
+        <Card v-if="Object.keys(selectedNode).length !== 0 ">
             <template #title>{{ selectedNode.label }}</template>
             <template #content>
                 <p class="m-0">
