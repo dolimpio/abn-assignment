@@ -9,30 +9,29 @@ Have docker installed on your PC.
 cd ABN
 docker compose up
 ```
+Wait for it to complete :)
+> [!IMPORTANT] 
+### __The frontend should be empty.__
 
-Because the process of loading data into Neo4j was out of the scope of the assignment, I decided to create an endpoint that writes the data into the database.
+As loading data into Neo4j was beyond the scope of this assignment, I've provided an endpoint to populate the database.
 
-To load this data go to:
- 
-    http://localhost:8000/docs  
-
-And execute the endpoint __/load_data__
-
-## Front-end usage
+To load the data, visit http://localhost:8000/docs and execute the endpoint __/load_data__ by clicking on __Try it out__ and then __Execute__. Alternatively, you can use the following command in your terminal:
 ```bash
-cd abn-assignment
-npm install
-npm run format
-npm run dev
+curl -X 'POST' \
+  'http://localhost:8000/load_data' \
+  -H 'accept: application/json' \
+  -d ''
 ```
 
-TODO:
-- Update README with docker compose instructions
-- Rename frontend
-- Dockerize frontend
-- Cleanup code and formatting
+After doing this the data should appear instantly on the frontend.
+
+> [!CAUTION]
+If you execute the endpoint/command more than once the data will be duplicate.
+
+> [!NOTE] 
+If you want to restart everything from scratch, don't forget to delete the contents of database/data and database/logs.
+
+If you have any doubts or inquiries please don't doub contacting me by email or LinkedIn:
+[LinkedIn](https://www.linkedin.com/in/david-olimpio-silva/)
 
 
-Do not rerun backend to not have duplicated data, data willl remain on volume
-
-Add instrucctions to run. add data...

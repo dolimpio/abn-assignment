@@ -8,6 +8,7 @@ from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+data_loaded = False
 
 app.add_middleware(
     CORSMiddleware,
@@ -33,6 +34,7 @@ class db:
         with self.driver.session() as session:
             for item in data:
                 session.write_transaction(self._create_relationship, item)
+    
     @staticmethod
     def _create_node(tx, item):
         tx.run("CREATE (:Node {name: $name, description: $description, parent: $parent})", name=item['name'], description=item['description'], parent=item['parent'])
@@ -88,3 +90,7 @@ def read_data():
     with database.driver.session() as session:
         result = session.read_transaction(database._return_data)
         return JSONResponse(result)
+
+
+
+    
