@@ -46,7 +46,7 @@ onMounted(async () => {
             <template #title>{{ selectedNode.name }}</template>
             <template #content>
                 <p class="m-0">
-                    {{ selectedNode.description }}
+                    {{ selectedNode.data.description }}
                 </p>
             </template>
         </Card>

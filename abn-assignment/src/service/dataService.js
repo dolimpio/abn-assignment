@@ -2,42 +2,36 @@ import axios from 'axios';
 
 const URI = 'http://localhost:8000/data'
 
-// Function to transform the backend data into the desired hierarchical structure
-const transformData = (backendData) => {
-  const hierarchy = {};
+function transformData(data) {
+    const map = new Map();
 
-  // Extract the name of the root node from the first element of backendData
-  const rootName = backendData.length > 0 ? backendData[0].name : 'Root';
-  hierarchy['root'] = { children: [] };
+    // Create a map of nodes indexed by their name
+    data.forEach(item => {
+        map.set(item.name, { label: item.name, data: { description: item.description }, children: [] });
+    });
 
-  backendData.forEach(item => {
-      const key = item.parent || 'root';
-      if (!hierarchy[key]) {
-          hierarchy[key] = { children: [] };
-      }
-      hierarchy[key].children.push({ ...item, children: [] });
-  });
-  
-  const createTree = (parent) => {
-      if (!hierarchy[parent]) return null;
-      
-      return hierarchy[parent].children.map(child => ({
-          key: `${parent}_${child.name}`,
-          label: child.name,
-          data: { description: child.description },
-          children: createTree(child.name)
-      }));
-  };
-  
-  const tree = createTree('root');
+    // Build the hierarchy based on the parent-child relationship and generate keys
+    data.forEach(item => {
+        const node = map.get(item.name);
+        const parent = item.parent ? map.get(item.parent) : null;
 
-  return {
-      key: '0',
-      label: rootName, // Set the label dynamically based on the name of the root node
-      data: {},
-      children: tree
-  };
-};
+        if (parent) {
+            parent.children.push(node);
+        }
+
+        // Generate key based on parent-child relationship
+        if (parent) {
+            const keyPrefix = parent.key ? parent.key + "_" : "";
+            const childIndex = parent.children.length;
+            node.key = keyPrefix + childIndex;
+        } else {
+            node.key = '0'; // Set root node key
+        }
+    });
+
+    // Return the root node only
+    return map.get('A');
+}
 
 export const fetchData = async () => {
     try {
@@ -57,3 +51,5 @@ export const fetchData = async () => {
         throw error;
     }
 };
+
+
