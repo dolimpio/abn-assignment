@@ -58,6 +58,7 @@ const hide = () => {
     console.log("Inside of hide");
 
     selectedNode.value = {};
+    // Unselect nodeS
     selection.value = {};
     console.log(selectedNode);
 }

@@ -15,3 +15,10 @@ abn-assignment/yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
+
+# Pyenv
+assignment
+
+# Docker volumes
+database/data
+database/logs
