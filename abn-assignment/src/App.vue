@@ -1,12 +1,12 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+import Message from './components/Message.vue'
 import Hierarchy from './components/Hierarchy.vue'
 </script>
 
 <template>
   <header>
     <div class="wrapper">
-      <HelloWorld msg="Hierarchy Data Visulization" />
+      <Message msg="Hierarchy Data Visulization" />
     </div>
   </header>
 

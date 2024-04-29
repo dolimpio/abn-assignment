@@ -1,11 +1,21 @@
 from pickle import STRING
 from typing import Union
+from pydantic import BaseModel
 from neo4j import GraphDatabase
 import os
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE"],
+    allow_headers=["*"],
+)
 
 class db:
     def __init__(self, uri, user, password):
@@ -18,33 +28,36 @@ class db:
         with self.driver.session() as session:
             for item in data:
                 session.write_transaction(self._create_node, item)
-
+                
+    def insert_relationships(self, data):
+        with self.driver.session() as session:
+            for item in data:
+                session.write_transaction(self._create_relationship, item)
     @staticmethod
     def _create_node(tx, item):
-        tx.run("CREATE (:Node {name: $name, description: $description})", name=item['name'], description=item['description'])
+        tx.run("CREATE (:Node {name: $name, description: $description, parent: $parent})", name=item['name'], description=item['description'], parent=item['parent'])
+        print("Node inserted: " + str(item))
+   
+    @staticmethod
+    def _create_relationship(tx, item): 
         if item['parent']:
-            tx.run("MERGE (parent:Node {name: $parent}) "
-                "MERGE (child:Node {name: $name}) "
-                "CREATE (parent)-[:HAS_CHILD]->(child)",
-                parent=item['parent'], name=item['name'])
+            tx.run("MATCH (parent:Node {name: $parent}), (child:Node {name: $name}) "
+                   "CREATE (child)-[:child_of]->(parent)",
+                   parent=item['parent'], name=item['name'])
+            print("Relationship create: Parent: " + item['parent'] + " of child: " + item['name'])
+
+
     @staticmethod
     def _return_data(tx):
-        result = tx.run("MATCH (n:Node)-[:HAS_CHILD]->(parent:Node) RETURN n.name AS name, n.description AS description, parent.name AS parent")
-        data = []
-        for record in result:
-            data.append({
-                "name": record["name"],
-                "description": record["description"],
-                "parent": record["parent"]
-            })
-        return data
-
+        result = tx.run("MATCH (n:Node) RETURN n.name AS name, n.description AS description, n.parent AS parent")
+        data = [{"name": record["name"], "description": record["description"], "parent": record["parent"]} for record in result]
+        return {"data": data}
 
 uri = os.getenv('NEO4J_URI')
 user = os.getenv('USER_NAME')
 password = os.getenv('PASSWORD')
 
-obj = db(uri, user, password)
+database = db(uri, user, password)
 
 # Endpoint for debbuging purposes
 @app.get("/")
@@ -65,12 +78,13 @@ def load_initial_data():
             {"name": "B-3", "description": "This is a description of B-3", "parent": "B"}
         ]
     }
-    obj.insert_data(initial_data['data'])
+    database.insert_data(initial_data['data'])
+    database.insert_relationships(initial_data['data'])
     return {"message": "Initial data loaded successfully"}
 
+# Retrieves data
 @app.get("/data")
 def read_data():
-    with obj.driver.session() as session:
-        result = session.write_transaction(obj._return_data)
-        data = [{"name": record["name"], "description": record["description"], "parent": record["parent"]} for record in result]
-        return JSONResponse(content={"data": data})
+    with database.driver.session() as session:
+        result = session.read_transaction(database._return_data)
+        return JSONResponse(result)

@@ -2,51 +2,12 @@
 import OrganizationChart from 'primevue/organizationchart';
 import Card from 'primevue/card';
 import Button from 'primevue/button';
+import { ref, onMounted } from "vue";
+import { fetchData } from '../service/dataService';
 
-
-import { ref } from "vue";
-
-const data = ref({
-    key: '0',
-    label: "A",
-    data: { "description": "This is a description of A" },
-    children: [
-        {
-            key: '0_0',
-            label: "B",
-            data: { "description": "This is a description of B" },
-            children: [
-                {
-                    key: '0_0_1',
-                    label: "B-1",
-                    data: { "description": "This is a description of B-1" }
-                },
-                {
-                    key: '0_0_2',
-                    label: "B-2",
-                    data: { "description": "This is a description of B-2" }
-                },
-                {
-                    key: '0_0_3',
-                    label: "B-3",
-                    data: { "description": "This is a description of B-3" }
-                }
-            ]
-        },
-        {
-            key: '0_1',
-            label: "C",
-            data: { "description": "This is a description of C" }
-        },
-        {
-            key: '0_2',
-            label: "D",
-            data: { "description": "This is a description of D" }
-        }
-    ]
-});
-const selection = ref({});
+const data = ref({});
 let selectedNode = ref({});
+const selection = ref({});
 
 const show = (event) => {
     console.log("Inside of show");
@@ -62,6 +23,12 @@ const hide = () => {
     selection.value = {};
     console.log(selectedNode);
 }
+
+onMounted(async () => {
+    // Fetch data when the component is mounted
+    data.value = await fetchData();
+});
+
 </script>
 
 <template>
@@ -76,10 +43,10 @@ const hide = () => {
             <template #header>
                 <Button icon="pi pi-times" severity="danger" aria-label="Cancel" @click="hide" />
             </template>
-            <template #title>{{ selectedNode.label }}</template>
+            <template #title>{{ selectedNode.name }}</template>
             <template #content>
                 <p class="m-0">
-                    {{ selectedNode.data.description }}
+                    {{ selectedNode.description }}
                 </p>
             </template>
         </Card>
