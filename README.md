@@ -26,3 +26,13 @@ npm run format
 npm run dev
 ```
 
+TODO:
+- Update README with docker compose instructions
+- Rename frontend
+- Dockerize frontend
+- Cleanup code and formatting
+
+
+Do not rerun backend to not have duplicated data, data willl remain on volume
+
+Add instrucctions to run. add data...
