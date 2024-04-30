@@ -26,21 +26,21 @@ curl -X 'POST' \
 
 After doing this, if you reload the frontend, the data should appear.
 
-
-- Frontend: http://localhost:8080/
-- Backend: http://localhost:8000/
-- Database:http://localhost:7474 (User: neo4j -- Password: Neo4j)
-
-
-
-
 > [!CAUTION]
 If you execute the endpoint/command more than once the data will be duplicate.
 
 > [!NOTE] 
 If you want to restart everything from scratch, don't forget to delete the contents of database/. (This folder will be create automatically after running the docker compose command. It will only appear locally)
 
-If you have any doubts or inquiries please don't doub contacting me by email or LinkedIn:
+## Components
+
+- Frontend: http://localhost:8080/
+- Backend: http://localhost:8000/
+- Database:http://localhost:7474 (User: neo4j -- Password: Neo4j)
+
+---
+
+> :incoming_envelope: If you have any doubts or inquiries please don't doub contacting me by email or LinkedIn:
 [LinkedIn](https://www.linkedin.com/in/david-olimpio-silva/)
 
 
