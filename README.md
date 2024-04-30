@@ -37,7 +37,7 @@ After doing this, if you reload the frontend, the data should appear.
 If you execute the endpoint/command more than once the data will be duplicate.
 
 > [!NOTE] 
-If you want to restart everything from scratch, don't forget to delete the contents of database/data and database/logs.
+If you want to restart everything from scratch, don't forget to delete the contents of database/data and database/logs. (This folders will be create automatically after running the docker compose command. They will only appear locally)
 
 If you have any doubts or inquiries please don't doub contacting me by email or LinkedIn:
 [LinkedIn](https://www.linkedin.com/in/david-olimpio-silva/)
