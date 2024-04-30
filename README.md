@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-Have docker installed on your PC.
+Have docker installed.
 
 ## Usage
 ```bash
@@ -11,7 +11,7 @@ docker compose up
 ```
 Wait for it to complete :)
 > [!IMPORTANT] 
-### __The frontend should be empty.__
+ __The frontend should be empty.__
 
 As loading data into Neo4j was beyond the scope of this assignment, I've provided an endpoint to populate the database.
 
@@ -23,7 +23,15 @@ curl -X 'POST' \
   -d ''
 ```
 
-After doing this the data should appear instantly on the frontend.
+After doing this, if you reload the frontend, the data should appear.
+
+
+- Frontend: http://localhost:8080/
+- Backend: http://localhost:8000/
+- Database:http://localhost:7474 (User: neo4j -- Password: Neo4j)
+
+
+
 
 > [!CAUTION]
 If you execute the endpoint/command more than once the data will be duplicate.

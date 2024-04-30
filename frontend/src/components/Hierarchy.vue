@@ -45,7 +45,8 @@ onMounted(async () => {
         <span>{{ slotProps.node.label }}</span>
       </template>
     </OrganizationChart>
-    <Card v-if="Object.keys(selectedNode).length !== 0">
+
+    <Card v-if="Object.keys(selectedNode).length !== 0" class="card-with-shadow">
       <template #header>
         <Button icon="pi pi-times" severity="danger" aria-label="Cancel" @click="hide" />
       </template>
@@ -58,3 +59,11 @@ onMounted(async () => {
     </Card>
   </div>
 </template>
+
+<style scoped>
+
+.card-with-shadow {
+  box-shadow: 2px 5px 5px 8px rgba(0, 0, 0, 0.1); /* Adjust shadow properties as needed */
+  margin: 20px; 
+}
+</style>
