@@ -6,7 +6,7 @@ Have docker installed.
 
 ## Usage
 ```bash
-cd ABN
+cd abn-assignment
 docker compose up
 ```
 Wait for it to complete :)
