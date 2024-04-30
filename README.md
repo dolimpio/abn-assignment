@@ -2,7 +2,8 @@
 
 ## Prerequisites
 
-Have docker installed.
+- Have docker installed.
+- Repository cloned locally.
 
 ## Usage
 ```bash
